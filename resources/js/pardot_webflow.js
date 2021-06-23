@@ -6,7 +6,7 @@ window.logResult = function(json) {
   }
 };
 
-makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
+var makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
   forms.each(function(){
     var form = $(this);
     form.on("submit", function(){
