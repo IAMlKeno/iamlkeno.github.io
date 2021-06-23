@@ -1,1 +1,1 @@
-logResult({ 'result' : 'success’ });
+logResult({"result": "success" });
