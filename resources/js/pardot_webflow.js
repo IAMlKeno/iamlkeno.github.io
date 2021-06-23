@@ -71,7 +71,7 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
 makeWebflowFormAjax($('#newsletter-form'));
 
 function logSuccess() {
-  logResult({ 'result' : 'success’ });
+  logResult({ 'result' : 'success' });
 }
 
 function logError() {
