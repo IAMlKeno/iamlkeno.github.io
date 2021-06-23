@@ -1,4 +1,5 @@
-window.logResult = function(json) {
+function logResult(json) {
+  console.log(json);
   if(json.result === "success"){
     formSuccess();
   } else if(json.result === "error") {
@@ -42,28 +43,27 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
 
       $.ajax({
         type: method,
-        url: action,
-        data: dataURI,
-        // dataType: "jsonp",
-        // jsonpCallback: 'logResult',
-        success: function (resultData) {
-          if (typeof successCallback === 'function') {
-            // call custom callback
-            result = successCallback(resultData);
-            if ( !result ) {
-              formError();
-              return;
-            }
-            formSuccess();
-          }
-        },
-        error: function (e, type, exception) {
-          // call custom callback
-          if (typeof errorCallback === 'function') {
-            errorCallback(e)
-          }
-          formError();
-        }
+        url: action + '?' + dataURI,
+        dataType: "jsonp",
+        jsonpCallback: 'logResult'
+        // success: function (resultData) {
+        //   if (typeof successCallback === 'function') {
+        //     // call custom callback
+        //     result = successCallback(resultData);
+        //     if ( !result ) {
+        //       formError();
+        //       return;
+        //     }
+        //     formSuccess();
+        //   }
+        // },
+        // error: function (e, type, exception) {
+        //   // call custom callback
+        //   if (typeof errorCallback === 'function') {
+        //     errorCallback(e)
+        //   }
+        //   formError();
+        // }
       });
 
       // Prevent default webflow action.
@@ -72,12 +72,4 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
   });
 }
 
-makeWebflowFormAjax($('form'));
-
-function logSuccess() {
-  logResult({"result": "success" });
-}
-
-function logError() {
-  logResult({"result": "error" });
-}
+// makeWebflowFormAjax($('form'));
