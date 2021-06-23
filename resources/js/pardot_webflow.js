@@ -42,9 +42,10 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
 
       $.ajax({
         type: method,
-        url: action + '?' + dataURI,
-        dataType: "jsonp",
-        jsonpCallback: 'logResult',
+        url: action,
+        data: dataURI,
+        // dataType: "jsonp",
+        // jsonpCallback: 'logResult',
         success: function (resultData) {
           if (typeof successCallback === 'function') {
             // call custom callback
