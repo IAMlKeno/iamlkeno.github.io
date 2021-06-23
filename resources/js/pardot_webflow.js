@@ -7,17 +7,17 @@ window.logResult = function(json) {
 };
 
 makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
-  forms.each(function(){
+  forms.each(function() {
     var form = $(this);
-    form.on("submit", function(){
+    form.on("submit", function() {
       var container =   form.parent();
-      var doneBlock  =  $(".w-form-done", container);
-      var failBlock  =  $(".w-form-fail", container);
+      var doneBlock =  $(".w-form-done", container);
+      var failBlock =  $(".w-form-fail", container);
 
-      var action =    form.attr("action");
-      var method =    form.attr("method");
-      var data =      form.serialize();
-      var dataURI =   {};
+      var action  = form.attr("action");
+      var method  = form.attr("method");
+      var data    = form.serialize();
+      var dataURI = {};
 
 
       form.find("input, textarea, select").each(function() {
@@ -29,29 +29,6 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
 
       dataURI = $.param(dataURI);
 
-      if($('#newsletter-requests').length !== 0) {
-        if($('#newsletter-requests').val().length == 0) {
-
-          // Call via ajax.
-          $.ajax({
-            type: method,
-            url: action + '?' + dataURI,
-            dataType: "jsonp",
-            jsonpCallback: 'logResult'
-          });
-
-        }
-      } else {
-
-        $.ajax({
-          type: method,
-          url: action + '?' + dataURI,
-          dataType: "jsonp",
-          jsonpCallback: 'logResult'
-        });
-
-      }
-
       formSuccess = function() {
         form.hide();
         doneBlock.fadeIn();
@@ -62,6 +39,32 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
         doneBlock.hide();
         failBlock.fadeIn();
       }
+
+      $.ajax({
+        type: method,
+        url: action + '?' + dataURI,
+        dataType: "jsonp",
+        jsonpCallback: 'logResult',
+        success: function (resultData) {
+          if (typeof successCallback === 'function') {
+            // call custom callback
+            result = successCallback(resultData);
+            if ( !result ) {
+              formError();
+              return;
+            }
+            formSuccess();
+          }
+        },
+        error: function (e) {
+          // call custom callback
+          if (typeof errorCallback === 'function') {
+            errorCallback(e)
+          }
+          formError();
+        }
+      });
+
       // Prevent default webflow action.
       return false;
     });
