@@ -56,7 +56,7 @@ makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
             formSuccess();
           }
         },
-        error: function (e) {
+        error: function (e, type, exception) {
           // call custom callback
           if (typeof errorCallback === 'function') {
             errorCallback(e)
